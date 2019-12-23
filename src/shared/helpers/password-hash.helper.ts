@@ -1,5 +1,3 @@
-import { SaltOnPasswordType } from "src/shared/enums/salt-on-password-type.enum";
-
 const crypto = require('crypto');
 
 export function passwordHashHelper(password: string, existSalt: string) {

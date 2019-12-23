@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, SetMetadata } from '@nestjs/common';
 import { AuthService } from 'src/shared/services/auth.service';
-import { User } from 'src/shared/entities/auth/user-auth.entity';
+import { User } from 'src/shared/entities/user.entity';
 import { RegisterAuthView } from 'src/shared/view-models/auth/register-auth.view';
 import { LoginAuthView } from 'src/shared/view-models/auth/login-auth.view';
 import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-login-auth.view';
+import { RolesGuard } from 'src/shared/guards/role-based.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +23,7 @@ export class AuthController {
     getRegister(): string {
         return this.authService.getRegister();
     }
-
+    
     @Get('/allUsers')
     async getAllUsers(): Promise<User[]> {
        const response = await this.authService.getAllUsers();
@@ -38,5 +39,4 @@ export class AuthController {
     async login(@Body() loginAuthView:LoginAuthView) : Promise<ResponseLoginAuthView> {
        return await this.authService.login(loginAuthView);
     }
-
 }
