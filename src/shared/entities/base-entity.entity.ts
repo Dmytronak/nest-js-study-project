@@ -11,6 +11,8 @@ export class BaseEntity {
     craationAt: Date;
 
     constructor() {
+        const ObjectID = require('mongodb').ObjectID
+        this._id = new ObjectID();
         this.craationAt = new Date();    
     }
 }

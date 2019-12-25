@@ -5,12 +5,12 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from 'src/shared/services/auth.service';
 import { jwtDynamicModule } from 'src/shared/modules/jwt-dynamic.module';
-import { authProviders } from 'src/shared/providers/auth/auth.provider';
-import { AdminService } from './services/admin/admin.service';
-import { adminProviders } from './providers/admin/admin.provider';
+import { repositoryProvider } from 'src/shared/providers/repository.provider';
+import { AdminService } from 'src/shared/services/admin/admin.service';
+import { BookService } from 'src/shared/services/book.service';
 
-const providers = [...databaseProvider, ...authProviders, ...adminProviders];
-const services = [AuthService, AdminService];
+const providers = [...databaseProvider, ...repositoryProvider];
+const services = [AuthService, AdminService,BookService];
 
 @Module({
     imports:[
