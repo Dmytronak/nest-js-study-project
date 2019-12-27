@@ -7,7 +7,7 @@ import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-logi
 import { JwtService } from '@nestjs/jwt';
 import { Repository, ObjectID } from 'typeorm';
 import { PayloadAuthView } from 'src/shared/view-models/auth/payload.auth.view';
-import { GetAllUsersAuthView, UserGetAllUsersAuthViewItem } from 'src/shared/view-models/auth/get-all-users.view';
+import { GetAllUsersAuthView, UserGetAllUsersAuthViewItem } from 'src/shared/view-models/auth/get-all-user-auth.view';
 import { ResetPasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
 import { GetResetPasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
 import { Role } from 'src/shared/entities/role.entity';
@@ -27,7 +27,7 @@ export class AuthService {
         return 'AUTH Register!';
     }
 
-    public async validateUser(userId: ObjectID): Promise<any> {
+    public async validate(userId: ObjectID): Promise<any> {
         const user: User = await this.userRepository.findOne(userId);
         if (user) {
             const { hash, salt, ...result } = user;
@@ -99,7 +99,7 @@ export class AuthService {
         return response;
     }
 
-    public async getResetPassswordUser(id: string): Promise<GetResetPasswordAuthView> {
+    public async getResetPasssword(id: string): Promise<GetResetPasswordAuthView> {
         const response: GetResetPasswordAuthView = await this.userRepository
             .findOne(id)
             .then(x => {
@@ -110,7 +110,7 @@ export class AuthService {
         return response;
     }
 
-    public async resetPasswordUser(resetPasswordAuthView: ResetPasswordAuthView): Promise<void> {
+    public async resetPassword(resetPasswordAuthView: ResetPasswordAuthView): Promise<void> {
         const user: User = await this.userRepository.findOne(resetPasswordAuthView.id);
         if (!user) {
             throw new HttpException({ error: `User ${resetPasswordAuthView.id} is not foudnd` }, 403);

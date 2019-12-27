@@ -4,7 +4,9 @@ import { Role } from 'src/shared/entities/role.entity';
 
 @Entity()
 export class User extends BaseEntity {
-    @Column()
+    @Column({
+        unique:true
+    })
     email: string;
 
     @Column()

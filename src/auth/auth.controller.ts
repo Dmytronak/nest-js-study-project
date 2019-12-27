@@ -3,7 +3,7 @@ import { AuthService } from 'src/shared/services/auth.service';
 import { RegisterAuthView } from 'src/shared/view-models/auth/register-auth.view';
 import { LoginAuthView } from 'src/shared/view-models/auth/login-auth.view';
 import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-login-auth.view';
-import { GetAllUsersAuthView } from 'src/shared/view-models/auth/get-all-users.view';
+import { GetAllUsersAuthView } from 'src/shared/view-models/auth/get-all-user-auth.view';
 import { ResetPasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
 import { GetResetPasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
 
@@ -43,12 +43,12 @@ export class AuthController {
 
     @Get('/resetPassword/:id')
     async getResetPassword(@Param() params): Promise<GetResetPasswordAuthView> {
-        return await this.authService.getResetPassswordUser(params.id);
+        return await this.authService.getResetPasssword(params.id);
     }
 
     @Post('/resetPassword')
     async resetPassword(@Body() resetPasswordAuthView: ResetPasswordAuthView): Promise<void> {
-        await this.authService.resetPasswordUser(resetPasswordAuthView);
+        await this.authService.resetPassword(resetPasswordAuthView);
     }
 
 }

@@ -1,5 +1,5 @@
 import { ObjectID } from "typeorm";
 
-export class ResetPasswordAdminView{
-    id:ObjectID;
+export class ResetPasswordAdminView {
+    id: ObjectID;
 }

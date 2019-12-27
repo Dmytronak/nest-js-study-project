@@ -1,4 +1,4 @@
-export class CreateAuthorAdminView{
-    firstName:string;
-    lastName:string;
+export class CreateAuthorAdminView {
+    firstName: string;
+    lastName: string;
 }

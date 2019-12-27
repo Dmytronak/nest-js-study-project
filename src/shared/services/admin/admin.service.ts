@@ -151,6 +151,7 @@ export class AdminService {
 
         const book: Book = new Book();
         book.title = createBookAdminView.title;
+        book.type = createBookAdminView.type;
         book.price = createBookAdminView.price;
         book.authors = authors;
         await this.bookRepository.save(book);
@@ -162,7 +163,7 @@ export class AdminService {
             .find()
             .then(result => {
                 result.map(x => {
-                    const book: BookGetAllBooksAdminViewItem = { id: x._id, title: x.title, price: x.price, authors: [] }
+                    const book: BookGetAllBooksAdminViewItem = { id: x._id, title: x.title,type:x.type, price: x.price, authors: [] }
                     book.authors = x.authors.map(x => {
                         const authors: AuthorBookGetAllBooksAdminViewItem = { id: x._id, firstName: x.firstName, lastName: x.lastName, fullName: x.fullName }
                         return authors;
@@ -192,6 +193,7 @@ export class AdminService {
             });
 
         book.title = updateBookAdminView.title;
+        book.type = updateBookAdminView.type;
         book.price = updateBookAdminView.price;
         book.authors = authors;
 

@@ -8,9 +8,10 @@ import { jwtDynamicModule } from 'src/shared/modules/jwt-dynamic.module';
 import { repositoryProvider } from 'src/shared/providers/repository.provider';
 import { AdminService } from 'src/shared/services/admin/admin.service';
 import { BookService } from 'src/shared/services/book.service';
+import { PaginationModel } from './models/pagination.model';
 
 const providers = [...databaseProvider, ...repositoryProvider];
-const services = [AuthService, AdminService,BookService];
+const services = [AuthService, AdminService, BookService, PaginationModel];
 
 @Module({
     imports:[
