@@ -6,6 +6,7 @@ import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-logi
 import { GetAllUsersAuthView } from 'src/shared/view-models/auth/get-all-user-auth.view';
 import { RestorePasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
 import { GetRestorePasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
+import { ApiParam } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -40,7 +41,11 @@ export class AuthController {
     async login(@Body() loginAuthView: LoginAuthView): Promise<ResponseLoginAuthView> {
         return await this.authService.login(loginAuthView);
     }
-
+    
+    @ApiParam({
+        name:'id',
+        type:'string'
+    })
     @Get('/restorePassword/:id')
     async getRestorePassword(@Param() params): Promise<GetRestorePasswordAuthView> {
         return await this.authService.getRestorePasssword(params.id);

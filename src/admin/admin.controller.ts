@@ -18,12 +18,13 @@ import { CreateUserAdminView } from 'src/shared/view-models/admin/user/create-us
 import { ResetPasswordAdminView } from 'src/shared/view-models/admin/user/reset-password-user.admin';
 import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-login-auth.view';
 import { LoginAsUserAdminView } from 'src/shared/view-models/admin/user/login-as-user.admin';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('admin')
+@ApiBearerAuth()
 export class AdminController {
-    constructor(private readonly adminService: AdminService) {
-    }
+    constructor(private readonly adminService: AdminService) {}
 
     //#region User
 
@@ -52,8 +53,12 @@ export class AdminController {
         await this.adminService.updatePasswordUser(updatePasswordAdminView);
     }
 
+    @ApiParam({
+        name:'id',
+        type:'string'
+    })
     @SetMetadata('roles', ['admin'])
-    @Get('/deleteUser')
+    @Get('/deleteUser/:id')
     async deleteUser(@Param() params): Promise<void> {
         await this.adminService.deleteUser(params.id);
     }
@@ -85,6 +90,10 @@ export class AdminController {
         await this.adminService.updateBook(updateBookAdminView);
     }
 
+    @ApiParam({
+        name:'id',
+        type:'string'
+    })
     @SetMetadata('roles', ['admin'])
     @Get('/deleteBook/:id')
     async deleteBook(@Param() params): Promise<void> {
@@ -112,6 +121,10 @@ export class AdminController {
         await this.adminService.updateAuthor(updateAuthorAdminView);
     }
 
+    @ApiParam({
+        name:'id',
+        type:'string'
+    })
     @SetMetadata('roles', ['admin'])
     @Get('/deleteAuthor/:id')
     async deleteAuthor(@Param() params): Promise<void> {
@@ -139,6 +152,10 @@ export class AdminController {
         await this.adminService.updateRole(updateRoleAdminView);
     }
 
+    @ApiParam({
+        name:'id',
+        type:'string'
+    })
     @SetMetadata('roles', ['admin'])
     @Get('/deleteRole/:id')
     async deleteRole(@Param() params): Promise<void> {
