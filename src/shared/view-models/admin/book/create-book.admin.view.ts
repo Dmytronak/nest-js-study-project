@@ -1,12 +1,23 @@
 import { BookType } from "src/shared/enums/book-type.enum";
+import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateBookAdminView {
-    title: string;
-    price: number;
-    type: BookType;
-    authors: AuthorCreateBookAdminViewItem[] = []
+export class AuthorCreateBookAdminViewItem { 
+    @ApiProperty()
+    authorId: string;
 }
 
-export class AuthorCreateBookAdminViewItem {
-    authorId: string;
+export class CreateBookAdminView {
+    @ApiProperty()
+    title: string;
+
+    @ApiProperty()
+    price: number;
+    
+    @ApiProperty()
+    type: BookType;
+    
+    @ApiProperty({
+        type:[AuthorCreateBookAdminViewItem]
+    })
+    authors: AuthorCreateBookAdminViewItem[] = []
 }

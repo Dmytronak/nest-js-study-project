@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class UpdateRoleAdminView {
+export class UpdatePasswordAdminView {
     @ApiProperty()
     id: string;
     
     @ApiProperty()
-    name: string;
+    password: string;
 }

@@ -1,12 +1,24 @@
-import { ObjectID } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateUserAdminView {
-    id: ObjectID;
-    creationAt: Date;
+    @ApiProperty()
+    id: string;
+    
+    @ApiProperty()
     email: string;
+    
+    @ApiProperty()
     firstName: string;
+    
+    @ApiProperty()
     lastName: string;
+    
+    @ApiProperty()
     fullName: string;
+    
+    @ApiProperty()
     age: number;
+    
+    @ApiProperty()
     roleId: string;
 }

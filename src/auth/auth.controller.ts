@@ -4,8 +4,8 @@ import { RegisterAuthView } from 'src/shared/view-models/auth/register-auth.view
 import { LoginAuthView } from 'src/shared/view-models/auth/login-auth.view';
 import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-login-auth.view';
 import { GetAllUsersAuthView } from 'src/shared/view-models/auth/get-all-user-auth.view';
-import { ResetPasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
-import { GetResetPasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
+import { RestorePasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
+import { GetRestorePasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
 
 @Controller('auth')
 export class AuthController {
@@ -41,14 +41,14 @@ export class AuthController {
         return await this.authService.login(loginAuthView);
     }
 
-    @Get('/resetPassword/:id')
-    async getResetPassword(@Param() params): Promise<GetResetPasswordAuthView> {
-        return await this.authService.getResetPasssword(params.id);
+    @Get('/restorePassword/:id')
+    async getRestorePassword(@Param() params): Promise<GetRestorePasswordAuthView> {
+        return await this.authService.getRestorePasssword(params.id);
     }
 
-    @Post('/resetPassword')
-    async resetPassword(@Body() resetPasswordAuthView: ResetPasswordAuthView): Promise<void> {
-        await this.authService.resetPassword(resetPasswordAuthView);
+    @Post('/restorePassword')
+    async restorePassword(@Body() restorePasswordAuthView: RestorePasswordAuthView): Promise<void> {
+        await this.authService.restorePassword(restorePasswordAuthView);
     }
 
 }

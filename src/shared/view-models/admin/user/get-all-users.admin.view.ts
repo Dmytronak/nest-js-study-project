@@ -1,10 +1,8 @@
-import { ObjectID } from "typeorm";
-
 export class GetAllUsersAdminView {
     allUsers: UserGetAllUsersAdminViewItem[] = [];
 }
 export class UserGetAllUsersAdminViewItem {
-    id: ObjectID;
+    id: string;
     email: string;
     firstName: string;
     lastName: string;

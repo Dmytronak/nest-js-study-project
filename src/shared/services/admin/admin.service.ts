@@ -15,7 +15,7 @@ import { GetAllBooksAdminView, BookGetAllBooksAdminViewItem, AuthorBookGetAllBoo
 import { UpdateBookAdminView } from 'src/shared/view-models/admin/book/update-book.admin.view';
 import { UpdateRoleAdminView } from 'src/shared/view-models/admin/role/update-role.admin.view';
 import { GetAllUsersAdminView, UserGetAllUsersAdminViewItem } from 'src/shared/view-models/admin/user/get-all-users.admin.view';
-import { UpdatePasswordAdminView } from 'src/shared/view-models/admin/user/update-password-user.admin..view';
+import { UpdatePasswordAdminView } from 'src/shared/view-models/admin/user/update-password-user.admin.view';
 import { passwordHashHelper } from 'src/shared/helpers/password-hash.helper';
 import { CreateUserAdminView } from 'src/shared/view-models/admin/user/create-user.admin.view';
 import { sendEmailHelper } from 'src/shared/helpers/send-email.helper';
@@ -62,7 +62,12 @@ export class AdminService {
             .find()
             .then(result => {
                 result.map(x => {
-                    const author: AuthorGetAllAuthorsAdminViewItem = { id: x._id, firstName: x.firstName, lastName: x.lastName, fullName: x.fullName }
+                    const author: AuthorGetAllAuthorsAdminViewItem = { 
+                        id: x._id.toString(), 
+                        firstName: x.firstName, 
+                        lastName: x.lastName, 
+                        fullName: x.fullName 
+                    }
                     response.allAuthors.push(author);
                 })
             });
@@ -96,7 +101,10 @@ export class AdminService {
             .find()
             .then(result => {
                 result.map(x => {
-                    const role: RoleGetAllRolesAdminViewItem = { id: x._id, name: x.name };
+                    const role: RoleGetAllRolesAdminViewItem = { 
+                        id: x._id.toString(), 
+                        name: x.name 
+                    };
                     response.allRoles.push(role);
                 })
             });
@@ -104,7 +112,8 @@ export class AdminService {
     }
 
     public async createRole(createRoleAdminView: CreateRoleAdminView): Promise<void> {
-        const isExistRole: Role = await this.rolesRepository.findOne({ name: createRoleAdminView.name });
+        const isExistRole: Role = await this.rolesRepository
+            .findOne({ name: createRoleAdminView.name });
 
         if (isExistRole) {
             throw new HttpException({ error: `Role $${createRoleAdminView.name} is already in base` }, 403);
@@ -116,7 +125,8 @@ export class AdminService {
     }
 
     public async updateRole(updateRoleAdminView: UpdateRoleAdminView): Promise<void> {
-        const role: Role = await this.rolesRepository.findOne({ name: updateRoleAdminView.name });
+        const role: Role = await this.rolesRepository
+            .findOne(updateRoleAdminView.id);
         role.name = updateRoleAdminView.name;
         await this.rolesRepository.update({ _id: role._id }, role);
     }
@@ -163,9 +173,20 @@ export class AdminService {
             .find()
             .then(result => {
                 result.map(x => {
-                    const book: BookGetAllBooksAdminViewItem = { id: x._id, title: x.title,type:x.type, price: x.price, authors: [] }
+                    const book: BookGetAllBooksAdminViewItem = { 
+                        id: x._id.toString(), 
+                        title: x.title,
+                        type:x.type, 
+                        price: x.price, 
+                        authors: [] 
+                    }
                     book.authors = x.authors.map(x => {
-                        const authors: AuthorBookGetAllBooksAdminViewItem = { id: x._id, firstName: x.firstName, lastName: x.lastName, fullName: x.fullName }
+                        const authors: AuthorBookGetAllBooksAdminViewItem = { 
+                            id: x._id.toString(), 
+                            firstName: x.firstName, 
+                            lastName: x.lastName, 
+                            fullName: x.fullName 
+                        }
                         return authors;
                     });
 
@@ -237,6 +258,7 @@ export class AdminService {
         if (!user) {
             throw new HttpException({ error: `User ${updateUserAdminView.id} is not foudnd` }, 403);
         }
+        
         user.email = updateUserAdminView.email;
         user.age = updateUserAdminView.age;
         user.firstName = updateUserAdminView.firstName;
@@ -259,7 +281,7 @@ export class AdminService {
             .then(result => {
                 result.map(x => {
                     const user: UserGetAllUsersAdminViewItem = {
-                        id: x._id,
+                        id: x._id.toString(),
                         email: x.email,
                         firstName: x.firstName,
                         lastName: x.lastName,
@@ -277,7 +299,8 @@ export class AdminService {
     }
 
     public async updatePasswordUser(updatePasswordAdminView: UpdatePasswordAdminView): Promise<void> {
-        const user: User = await this.userRepository.findOne(updatePasswordAdminView.id);
+        const user: User = await this.userRepository
+            .findOne(updatePasswordAdminView.id);
         if (!user) {
             throw new HttpException({ error: `User ${updatePasswordAdminView.id} is not foudnd` }, 403);
         }
@@ -287,9 +310,10 @@ export class AdminService {
     }
 
     public async resetPasswordUser(resetPasswordAdminView: ResetPasswordAdminView): Promise<void> {
-        const user: User = await this.userRepository.findOne(resetPasswordAdminView.id);
+        const user: User = await this.userRepository
+            .findOne(resetPasswordAdminView.id);
         user.oldHash = user.hash;
-        user.hash = 'admin_discard_pass';
+        user.hash = process.env.ADMIN_PASSWORD;
         this.userRepository.update({ _id: user._id }, user);
         const link = `${process.env.USER_CHANGE_PASSWORD_PATH}${user._id}`;
         await sendEmailHelper(`${user.fullName}`, user.email, link)
@@ -302,8 +326,13 @@ export class AdminService {
 
     public async loginAsUser(loginAsUserAdminView: LoginAsUserAdminView): Promise<ResponseLoginAuthView> {
         const response: ResponseLoginAuthView = { access_token: '' };
-        const user = await this.userRepository.findOne(loginAsUserAdminView.id);
-        let payload: PayloadAuthView = { sub: user._id, email: user.email, roles: Array<string>() };
+        const user = await this.userRepository
+            .findOne(loginAsUserAdminView.id);
+            
+        let payload: PayloadAuthView = { 
+            sub: user._id, 
+            email: user.email, 
+            roles: Array<string>() };
 
         if (user.roles) {
             payload = {

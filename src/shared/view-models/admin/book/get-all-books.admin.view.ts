@@ -1,11 +1,10 @@
-import { ObjectID } from "typeorm";
 import { BookType } from "src/shared/enums/book-type.enum";
 
 export class GetAllBooksAdminView {
     allBooks: BookGetAllBooksAdminViewItem[] = [];
 }
 export class BookGetAllBooksAdminViewItem {
-    id: ObjectID;
+    id: string;
     title: string;
     type: BookType;
     price: number;
@@ -13,7 +12,7 @@ export class BookGetAllBooksAdminViewItem {
 }
 
 export class AuthorBookGetAllBooksAdminViewItem {
-    id: ObjectID;
+    id: string;
     firstName: string;
     lastName: string;
     fullName: string;

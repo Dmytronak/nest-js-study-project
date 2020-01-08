@@ -1,6 +1,9 @@
-import { ObjectID } from "typeorm";
+import { ApiProperty } from '@nestjs/swagger';
 
-export class ResetPasswordAuthView{
-    id:ObjectID;
+export class RestorePasswordAuthView{
+    @ApiProperty()
+    id:string;
+
+    @ApiProperty()
     password:string;
 }

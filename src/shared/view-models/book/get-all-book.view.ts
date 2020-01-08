@@ -1,18 +1,17 @@
-import { ObjectID } from "typeorm";
 import { BookType } from "src/shared/enums/book-type.enum";
 
-export class GetFilteredBookView {
+export class GetAllBookView {
     collectionSize: number;
-    books: BookGetFilteredBookViewItem[] = [];
+    books: BookGetAllBookViewItem[] = [];
 }
-export class BookGetFilteredBookViewItem {
-    id: ObjectID;
+export class BookGetAllBookViewItem {
+    id: string;
     title: string;
     type: BookType;
     price: number;
-    authors: AuthorBookGetFilteredBookViewItem[] = [];
+    authors: AuthorBookGetAllBookViewItem[] = [];
 }
-export class AuthorBookGetFilteredBookViewItem {
-    id: ObjectID;
+export class AuthorBookGetAllBookViewItem {
+    id: string;
     fullName: string;
 }

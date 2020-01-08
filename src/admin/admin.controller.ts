@@ -13,7 +13,7 @@ import { GetAllBooksAdminView } from 'src/shared/view-models/admin/book/get-all-
 import { UpdateBookAdminView } from 'src/shared/view-models/admin/book/update-book.admin.view';
 import { UpdateRoleAdminView } from 'src/shared/view-models/admin/role/update-role.admin.view';
 import { GetAllUsersAdminView } from 'src/shared/view-models/admin/user/get-all-users.admin.view';
-import { UpdatePasswordAdminView } from 'src/shared/view-models/admin/user/update-password-user.admin..view';
+import { UpdatePasswordAdminView } from 'src/shared/view-models/admin/user/update-password-user.admin.view';
 import { CreateUserAdminView } from 'src/shared/view-models/admin/user/create-user.admin.view';
 import { ResetPasswordAdminView } from 'src/shared/view-models/admin/user/reset-password-user.admin';
 import { ResponseLoginAuthView } from 'src/shared/view-models/auth/response-login-auth.view';
@@ -134,7 +134,7 @@ export class AdminController {
         await this.adminService.createRole(createRoleAdminView);
     }
     @SetMetadata('roles', ['admin'])
-    @Post('/updateRoole')
+    @Post('/updateRole')
     async updateRole(@Body() updateRoleAdminView: UpdateRoleAdminView): Promise<void> {
         await this.adminService.updateRole(updateRoleAdminView);
     }

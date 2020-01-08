@@ -8,8 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository, ObjectID } from 'typeorm';
 import { PayloadAuthView } from 'src/shared/view-models/auth/payload.auth.view';
 import { GetAllUsersAuthView, UserGetAllUsersAuthViewItem } from 'src/shared/view-models/auth/get-all-user-auth.view';
-import { ResetPasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
-import { GetResetPasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
+import { RestorePasswordAuthView } from 'src/shared/view-models/auth/reset-password-auth';
+import { GetRestorePasswordAuthView } from 'src/shared/view-models/auth/get-reset-password-auth';
 import { Role } from 'src/shared/entities/role.entity';
 
 @Injectable()
@@ -99,27 +99,31 @@ export class AuthService {
         return response;
     }
 
-    public async getResetPasssword(id: string): Promise<GetResetPasswordAuthView> {
-        const response: GetResetPasswordAuthView = await this.userRepository
+    public async getRestorePasssword(id: string): Promise<GetRestorePasswordAuthView> {
+        const response: GetRestorePasswordAuthView = await this.userRepository
             .findOne(id)
             .then(x => {
-                const result: GetResetPasswordAuthView = { id: x._id, fullName: x.fullName, email: x.email };
+                const result: GetRestorePasswordAuthView = { 
+                    id: x._id.toString(), 
+                    fullName: x.fullName, 
+                    email: x.email 
+                };
                 return result;
             })
 
         return response;
     }
 
-    public async resetPassword(resetPasswordAuthView: ResetPasswordAuthView): Promise<void> {
-        const user: User = await this.userRepository.findOne(resetPasswordAuthView.id);
+    public async restorePassword(restorePasswordAuthView: RestorePasswordAuthView): Promise<void> {
+        const user: User = await this.userRepository.findOne(restorePasswordAuthView.id);
         if (!user) {
-            throw new HttpException({ error: `User ${resetPasswordAuthView.id} is not foudnd` }, 403);
+            throw new HttpException({ error: `User ${restorePasswordAuthView.id} is not foudnd` }, 403);
         }
-        const credentials = passwordHashHelper(resetPasswordAuthView.password, user.salt);
+        const credentials = passwordHashHelper(restorePasswordAuthView.password, user.salt);
         user.hash = credentials.hashPassword;
 
         if (user.hash === user.oldHash) {
-            throw new HttpException({ error: `Your password ${resetPasswordAuthView.password} is not valid, you can't use old password` }, 403);
+            throw new HttpException({ error: `Your password ${restorePasswordAuthView.password} is not valid, you can't use old password` }, 403);
         }
 
         await this.userRepository.update({ _id: user._id }, user);

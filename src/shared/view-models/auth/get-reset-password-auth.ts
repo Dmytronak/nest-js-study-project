@@ -1,7 +1,5 @@
-import { ObjectID } from "typeorm";
-
-export class GetResetPasswordAuthView{
-    id:ObjectID;
+export class GetRestorePasswordAuthView{
+    id:string;
     email: string;
     fullName: string;
 }
